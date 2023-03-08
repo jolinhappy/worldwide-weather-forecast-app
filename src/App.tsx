@@ -13,23 +13,26 @@ import {
   IDisplayDailyData,
   IDailyTemperature,
   IDailyHumidity,
+  ICurrentWeather,
   Category
 } from './types';
 import styled from "styled-components";
 import geoApiHandler from './apis/geo';
 import onecallApiHandler from './apis/onecall';
+import weatherApiHandler from './apis/weather';
 import dayjs from 'dayjs';
 
 
 
 const AppComponent = ({className}: ICommonComponentProperty) => {
   const [inputValue, setInputValue] = useState<string>('Taipei');
-  const [currentWeather, setCurrentWeather] = useState<ICurrent|null>(null);
+  const [currentWeather, setCurrentWeather] = useState<ICurrentWeather|null>(null);
   const [dailyWeather, setDailyWeather] = useState<IDisplayDailyData[]>([]);
   const [currentSelectedCategory, setCurrentSelectedCategory] = useState<Category>('weather');
   const [localName, setlocalName] = useState<string>('臺北市');
   const [dailyTemperature, setDailyTemperature] = useState<IDailyTemperature[]>([]);
   const [dailyHumidity, setDailyHumidity] = useState<IDailyHumidity[]>([]);
+  const [currentCity, setCurrentCity] = useState<string>('');
 
   useEffect(() => {
     handleSearch();
@@ -39,14 +42,11 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
   async function handleSearch () {
     const coordinate = await getSearchedCoordinate(inputValue);
     if (!coordinate) return;
+    // 避免把input刪掉後，又點擊refresh，會無法找到目前要查的地點
+    setCurrentCity(inputValue);
     const res = await onecallApiHandler.getWeatherForecast(coordinate);
     if (res) {
-      setCurrentWeather((prev) => {
-        return {
-          ...prev,
-          ...res.current,
-        }
-      });
+      setCurrentWeather(getCurrentWeatherData(res.current));
       setDailyWeather(getDailyWeatherData(res.daily).slice(0, 4));
       setDailyTemperature(getDailyTemperatureData(res.daily).slice(0, 4));
       setDailyHumidity(getDailyHumidityData(res.daily).slice(0, 4));
@@ -115,14 +115,32 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
       value: item.humidity
     }));
   }
+
+  function getCurrentWeatherData (current: ICurrent) {
+    return {
+      icon: current.weather[0].icon,
+      description: current.weather[0].description,
+      temp: Math.round(current.temp)
+    }
+  }
+
+  async function handleRefresh () {
+    const res = await weatherApiHandler.getCurrentWeather(currentCity);
+    const currentWeatherData = {
+      icon: res.weather[0].icon,
+      description: res.weather[0].description,
+      temp: Math.round(res.main.temp),
+    }
+    setCurrentWeather(currentWeatherData);
+  }
   return (
     <div className={className}>
-      <h1>Worldwide Weather Forecast</h1>
+      <h1>全球天氣預報</h1>
       <section className='weather-search'>
         <SearchInput value={inputValue} inputChange={handleInputChange} search={handleSearch} />
       </section>
       <section className='weather-now-data'>
-        <TodayWeatherCard data={currentWeather} localName={localName} />
+        <TodayWeatherCard data={currentWeather} localName={localName} refresh={handleRefresh} />
       </section>
       <section className='weather-forecast-data'>
         <CategoryTabs currentSelectedTab={currentSelectedCategory} tabSelect={handleTabSelect}/>

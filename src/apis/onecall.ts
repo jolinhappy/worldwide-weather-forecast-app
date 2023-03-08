@@ -10,7 +10,4 @@ export default {
   getWeatherForecast(coordinate: ICoordinate): Promise<IOnecallWeatherData> {
     return apiHelper.get(`${baseURL}lat=${coordinate.lat}&lon=${coordinate.lon}&units=metric&lang=zh_tw&appid=${apiKey}`)
   }
-  // getWeatherForecast(city: string): Promise<any> {
-  //   return apiHelper.get(`forecast/daily?q=${city}&appid=${apiKey}`)
-  // }
 }

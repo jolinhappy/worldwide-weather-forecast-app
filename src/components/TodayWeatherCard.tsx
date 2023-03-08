@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { ICommonComponentProperty, ICurrent } from '../types';
+import { ICommonComponentProperty, ICurrentWeather } from '../types';
 import { ReactComponent as RefreshIcon } from '../images/refresh.svg';
 
 interface ITodayWeatherCardProperty extends ICommonComponentProperty {
-  data: ICurrent | null;
+  data: ICurrentWeather | null;
   localName: string;
+  refresh: () => void;
 }
 
 const Refresh = styled.div`
@@ -17,19 +18,10 @@ const Refresh = styled.div`
     height: 16px;
     margin-left: auto;
     cursor: pointer;
-    /* animation: rotate infinite 1.5s linear; */
   }
-  /* @keyframes rotate {
-    from{
-      transform: rotate(360deg);
-    }
-    to {
-      transform: rotate(0deg);
-    }
-  } */
   `
 
-const TodayWeatherCardComponet = ({ className, data, localName }: ITodayWeatherCardProperty) => {
+const TodayWeatherCardComponet = ({ className, data, localName, refresh }: ITodayWeatherCardProperty) => {
   function toRounding (value: number) {
     return Math.round(value);
   }
@@ -37,15 +29,15 @@ const TodayWeatherCardComponet = ({ className, data, localName }: ITodayWeatherC
     <div className={className}>
       <h2>{localName} - 今日天氣</h2>
       <div className="weather">
-        <img src={`https://openweathermap.org/img/wn/${data?.weather[0].icon}@4x.png`}/>
+        <img src={`https://openweathermap.org/img/wn/${data?.icon}@4x.png`}/>
         <div className="weather_temp-info">
-          <p className="temp">{data?.temp ? `${toRounding(data?.temp)}°C`: '-'}</p>
-          <p className="description">{data?.weather[0].description}</p>              
+          <p className="temp">{data?.temp ? `${data?.temp}°C`: '-'}</p>
+          <p className="description">{data?.description}</p>              
         </div>  
       </div>
         {/* TODO: refresh */}
         <Refresh>
-          <RefreshIcon />
+          <RefreshIcon onClick={refresh} />
         </ Refresh>
     </div>
   )

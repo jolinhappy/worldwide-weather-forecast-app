@@ -43,3 +43,9 @@ export interface IPieChartData {
   value: number;
   date: string;
 }
+
+export interface ICurrentWeather {
+  icon: string;
+  temp: number;
+  description: string;
+}
