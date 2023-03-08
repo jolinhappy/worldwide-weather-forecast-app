@@ -27,8 +27,19 @@ export interface IDisplayTabs {
   name: string;
 }
 
-export interface IBarChartData {
+export interface IDailyTemperature {
   date: string;
   min: number;
   max: number
+}
+
+export interface IDailyHumidity {
+  date: string;
+  value: number;
+}
+
+export interface IPieChartData {
+  color: string;
+  value: number;
+  date: string;
 }

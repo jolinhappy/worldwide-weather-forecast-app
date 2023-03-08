@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { ICommonComponentProperty, IBarChartData } from '../types';
+import { ICommonComponentProperty, IDailyTemperature } from '../types';
 
 interface ITemperatureBarChartProperty extends ICommonComponentProperty {
-  data: IBarChartData[];
+  data: IDailyTemperature[];
 }
 
 const TemperatureBarChartComponet = ({ className, data }: ITemperatureBarChartProperty) => {

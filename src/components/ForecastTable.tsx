@@ -8,14 +8,13 @@ interface IForecastTableProperty extends ICommonComponentProperty {
 }
 
 const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
-  const fourDaysData = data.slice(0, 4);
   return (
     <table className={className}>
       <thead>
           <tr>
             <th></th>
             {
-              fourDaysData.map((item, index) => (
+              data.map((item, index) => (
                 <td key={index}>
                   <h3>{item.date}</h3>
                   <img src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`} alt="" />
@@ -29,7 +28,7 @@ const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
           <tr>
             <th>白天</th>
             {
-              fourDaysData.map((item, index) => (
+              data.map((item, index) => (
                 <td key={index}>{item.mornTemp}°C</td>
               ))
             }
@@ -37,7 +36,7 @@ const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
           <tr>
             <th>晚上</th>
             {
-              fourDaysData.map((item, index) => (
+              data.map((item, index) => (
                 <td key={index}>{item.nightTemp}°C</td>
               ))
             }
@@ -45,7 +44,7 @@ const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
           <tr>
             <th>體感溫度</th>
             {
-              fourDaysData.map((item, index) => (
+              data.map((item, index) => (
                 <td key={index}>{item.averageFeelsLike}°C</td>
               ))
             }
@@ -53,7 +52,7 @@ const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
           <tr>
             <th>紫外線</th>
             {
-              fourDaysData.map((item, index) => (
+              data.map((item, index) => (
                 <td key={index}>{item.uvi}</td>
               ))
             }

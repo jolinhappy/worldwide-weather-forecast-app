@@ -4,13 +4,15 @@ import TodayWeatherCard from './components/TodayWeatherCard';
 import CategoryTabs from './components/CategoryTabs';
 import ForecastTable from './components/ForecastTable';
 import TemperatureBarChart from './components/TemperatureBarChart';
+import HumidityPieChart from './components/HumidityPieChart';
 import {
   ICommonComponentProperty,
   ICoordinate,
   ICurrent,
   IDaily,
   IDisplayDailyData,
-  IBarChartData,
+  IDailyTemperature,
+  IDailyHumidity,
   Category
 } from './types';
 import styled from "styled-components";
@@ -26,7 +28,8 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
   const [dailyWeather, setDailyWeather] = useState<IDisplayDailyData[]>([]);
   const [currentSelectedCategory, setCurrentSelectedCategory] = useState<Category>('weather');
   const [localName, setlocalName] = useState<string>('臺北市');
-  const [dailyTemperature, setDailyTemperature] = useState<IBarChartData[]>([]);
+  const [dailyTemperature, setDailyTemperature] = useState<IDailyTemperature[]>([]);
+  const [dailyHumidity, setDailyHumidity] = useState<IDailyHumidity[]>([]);
 
   useEffect(() => {
     handleSearch();
@@ -44,8 +47,9 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
           ...res.current,
         }
       });
-      setDailyWeather(getDailyWeatherData(res.daily));
+      setDailyWeather(getDailyWeatherData(res.daily).slice(0, 4));
       setDailyTemperature(getDailyTemperatureData(res.daily).slice(0, 4));
+      setDailyHumidity(getDailyHumidityData(res.daily).slice(0, 4));
     }
   };
 
@@ -79,7 +83,7 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
       case 'temperature':
         return <TemperatureBarChart data={dailyTemperature} />
       case 'humidity':
-        return <p>濕度</p>
+        return <HumidityPieChart data={dailyHumidity} />
       default:
         return <ForecastTable data={dailyWeather} />
     }
@@ -102,6 +106,13 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
       date: dayjs.unix(item.dt).format('MM/DD'),
       min: Math.round(item.temp.min),
       max: Math.round(item.temp.max),
+    }));
+  }
+
+  function getDailyHumidityData (daily: IDaily[]) {
+    return daily.map((item: IDaily) => ({
+      date: dayjs.unix(item.dt).format('MM/DD'),
+      value: item.humidity
     }));
   }
   return (
