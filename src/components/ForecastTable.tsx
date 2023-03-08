@@ -1,57 +1,72 @@
 import { table } from "console";
 import React from "react";
 import styled from "styled-components";
-import { ICommonComponentProperty } from '../types';
+import { ICommonComponentProperty, IDisplayDailyData } from '../types';
 
-const CategoryTabsComponet = ({ className }: ICommonComponentProperty) => {
+interface IForecastTableProperty extends ICommonComponentProperty {
+  data: IDisplayDailyData[];
+}
+
+const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
+  const fourDaysData = data.slice(0, 4);
   return (
     <table className={className}>
       <thead>
           <tr>
             <th></th>
-            <th>3/7</th>
-            <th>3/8</th>
-            <th>3/9</th>
-            <th>3/10</th>
+            {
+              fourDaysData.map((item, index) => (
+                <td key={index}>
+                  <h3>{item.date}</h3>
+                  <img src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`} alt="" />
+                  <p>{item.description}</p>
+                </td>
+              ))
+            }
           </tr>
       </thead>
       <tbody>
           <tr>
             <th>白天</th>
-            <td>30度</td>
-            <td>30度</td>
-            <td>30度</td>
-            <td>30度</td>
+            {
+              fourDaysData.map((item, index) => (
+                <td key={index}>{item.mornTemp}°C</td>
+              ))
+            }
           </tr>
           <tr>
             <th>晚上</th>
-            <td>with two columns</td>
-            <td>The table body</td>
-            <td>with two columns</td>
-            <td>d</td>
+            {
+              fourDaysData.map((item, index) => (
+                <td key={index}>{item.nightTemp}°C</td>
+              ))
+            }
           </tr>
           <tr>
             <th>體感溫度</th>
-            <td>with two columns</td>
-            <td>The table body</td>
-            <td>with two columns</td>
-            <td>ds</td>
+            {
+              fourDaysData.map((item, index) => (
+                <td key={index}>{item.averageFeelsLike}°C</td>
+              ))
+            }
           </tr>
           <tr>
             <th>紫外線</th>
-            <td>with two columns</td>
-            <td>The table body</td>
-            <td>with two columns</td>
-            <td>ee</td>
+            {
+              fourDaysData.map((item, index) => (
+                <td key={index}>{item.uvi}</td>
+              ))
+            }
           </tr>
       </tbody>
     </table>
   )
 };
 
-const CategoryTabs = styled(CategoryTabsComponet)`
+const ForecastTable = styled(ForecastTableComponet)`
   width: 100%;
-  background-color: pink;
+  background-color: #EED6D3;
+  color: #3B0404;
   th {
     padding: 10px;
   }
@@ -61,9 +76,15 @@ const CategoryTabs = styled(CategoryTabsComponet)`
   }
   tr {
     th {
-      background-color: red;
+      background-color: #B95C50;
+      font-weight: bold;
+      color: #FADCD9;
     }
+  }
+  th, td {
+    border: 1px solid #B95C50;
+    border-collapse: collapse;
   }
 `
 
-export default CategoryTabs;
+export default ForecastTable;
