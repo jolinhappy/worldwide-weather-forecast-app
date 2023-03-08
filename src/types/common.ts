@@ -26,3 +26,9 @@ export interface IDisplayTabs {
   type: Category;
   name: string;
 }
+
+export interface IBarChartData {
+  date: string;
+  min: number;
+  max: number
+}
