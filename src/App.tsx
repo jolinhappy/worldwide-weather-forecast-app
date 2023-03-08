@@ -21,8 +21,7 @@ import geoApiHandler from './apis/geo';
 import onecallApiHandler from './apis/onecall';
 import weatherApiHandler from './apis/weather';
 import dayjs from 'dayjs';
-
-
+import { Toast } from './utils/toast-helper';
 
 const AppComponent = ({className}: ICommonComponentProperty) => {
   const [inputValue, setInputValue] = useState<string>('Taipei');
@@ -56,12 +55,17 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
   async function getSearchedCoordinate (city: string): Promise<ICoordinate | undefined> {
     try {
       const res = await geoApiHandler.getCoordinate(city);
-      if (res) {
+      if (res.length > 0) {
         setlocalName(res[0].local_names['zh'] || res[0].name);
         return {
           lat: res[0].lat,
           lon: res[0].lon
         }        
+      } else {
+        Toast.fire({
+          icon: 'warning',
+          title: '查無此地點，請重新搜尋！',
+        });
       }
     } catch (error) {
       console.log(error);
