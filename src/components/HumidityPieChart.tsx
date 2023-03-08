@@ -110,7 +110,7 @@ const HumidityPieChart = styled(HumidityPieChartComponet)`
     .chart-info {
       font-size: 16px;
       padding: 13px;
-      width: 100px;
+      width: 80px;
     }
   }
 `

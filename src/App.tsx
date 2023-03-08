@@ -57,7 +57,7 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
     try {
       const res = await geoApiHandler.getCoordinate(city);
       if (res) {
-        setlocalName(res[0].local_names['zh']);
+        setlocalName(res[0].local_names['zh'] || res[0].name);
         return {
           lat: res[0].lat,
           lon: res[0].lon

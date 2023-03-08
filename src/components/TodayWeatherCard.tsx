@@ -22,9 +22,6 @@ const Refresh = styled.div`
   `
 
 const TodayWeatherCardComponet = ({ className, data, localName, refresh }: ITodayWeatherCardProperty) => {
-  function toRounding (value: number) {
-    return Math.round(value);
-  }
   return (
     <div className={className}>
       <h2>{localName} - 今日天氣</h2>
@@ -35,7 +32,6 @@ const TodayWeatherCardComponet = ({ className, data, localName, refresh }: IToda
           <p className="description">{data?.description}</p>              
         </div>  
       </div>
-        {/* TODO: refresh */}
         <Refresh>
           <RefreshIcon onClick={refresh} />
         </ Refresh>
@@ -48,6 +44,7 @@ const TodayWeatherCard = styled(TodayWeatherCardComponet)`
   background-color: #67595E;
   border-radius: 5px;
   color: #EED6D3;
+  min-height: 250px;
   h2 {
     text-align: center;
     font-size: 26px;
