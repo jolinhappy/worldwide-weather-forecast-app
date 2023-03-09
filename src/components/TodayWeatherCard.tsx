@@ -26,7 +26,7 @@ const TodayWeatherCardComponet = ({ className, data, localName, refresh }: IToda
     <div className={className}>
       <h2>{localName} - 今日天氣</h2>
       <div className="weather">
-        <img src={`https://openweathermap.org/img/wn/${data?.icon}@4x.png`}/>
+        <img src={`https://openweathermap.org/img/wn/${data?.icon}@4x.png`} alt="weather-icon" />
         <div className="weather_temp-info">
           <p className="temp">{data?.temp ? `${data?.temp}°C`: '-'}</p>
           <p className="description">{data?.description}</p>              

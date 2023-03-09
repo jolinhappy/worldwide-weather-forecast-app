@@ -72,7 +72,7 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
     }
   };
 
-  function handleInputChange (event: any) {
+  function handleInputChange (event: React.ChangeEvent<HTMLInputElement>):void {
     setInputValue(event.target.value);
   };
 
@@ -129,13 +129,23 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
   }
 
   async function handleRefresh () {
-    const res = await weatherApiHandler.getCurrentWeather(currentCity);
-    const currentWeatherData = {
-      icon: res.weather[0].icon,
-      description: res.weather[0].description,
-      temp: Math.round(res.main.temp),
+    try {
+      const res = await weatherApiHandler.getCurrentWeather(currentCity);
+      if (res.cod !== 200) {
+        Toast.fire({
+          icon: 'error',
+          title: `${res.message}`,
+        });
+      }
+      const currentWeatherData = {
+        icon: res.weather[0].icon,
+        description: res.weather[0].description,
+        temp: Math.round(res.main.temp),
+      }
+      setCurrentWeather(currentWeatherData);
+    } catch (error) {
+      console.log(error)
     }
-    setCurrentWeather(currentWeatherData);
   }
   return (
     <div className={className}>

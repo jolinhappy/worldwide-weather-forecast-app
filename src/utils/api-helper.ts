@@ -14,7 +14,12 @@ axiosInstance.interceptors.response.use(
   (response)=> {
     return response.data;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    if (error.response) {
+      return error.response.data;
+    }
+    return Promise.reject(error);
+  }
 )
 
 export const apiHelper = axiosInstance;

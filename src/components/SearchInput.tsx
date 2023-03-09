@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { ICommonComponentProperty } from '../types';
 interface ISearchInput extends ICommonComponentProperty {
   value: string;
-  inputChange: any;
-  search: any;
+  inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  search: () => void;
 }
 
 const SearchInputComponent = ({ className, value, inputChange, search }: ISearchInput) => {

@@ -26,7 +26,7 @@ export interface IWind {
 export interface ICurrentWeatherResponse {
   base: string;
   clouds: IClouds;
-  cod: number;
+  cod: number | string;
   coord: ICoordinate;
   dt: number;
   id: number;
@@ -37,4 +37,6 @@ export interface ICurrentWeatherResponse {
   visibility: number;
   weather: IWeather[];
   wind: IWind;
+  // cod 404
+  message?: string;
 }
