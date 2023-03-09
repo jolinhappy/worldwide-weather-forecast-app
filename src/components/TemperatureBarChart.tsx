@@ -8,15 +8,11 @@ interface ITemperatureBarChartProperty extends ICommonComponentProperty {
 
 const TemperatureBarChartComponet = ({ className, data }: ITemperatureBarChartProperty) => {
   // 依照實際氣溫的最大值去計算基本參考值
-  const basicTemp: number = useMemo(() => {
-    return data.reduce((prev, curr) => prev + curr.max, 0) / 4 + 10;
-
-  }, [data])
+  const basicTemp = useMemo(() => data.reduce((prev, curr) => prev + curr.max, 0) / 4 + 10, [data])
   const barChartMaxHeight: number = 400;
-
   function getHeight (value: number) {
     const perTempToHeight = barChartMaxHeight / basicTemp;
-    return value * perTempToHeight;
+    return value < 0 ? Math.abs(value * perTempToHeight) : value * perTempToHeight;
   }
   return (
     <div className={className}>
@@ -35,10 +31,10 @@ const TemperatureBarChartComponet = ({ className, data }: ITemperatureBarChartPr
           data.map((item, index) => (
             <div className="temperature-bar" key={index}>
               <div className="bar-item">
-                <div className="bar max" style={{ height: getHeight(item.max) }}>
+                <div className="bar max" style={{ height: getHeight(item.max), transform: item.max < 0 ? `translateY(${item.max}px)` : undefined  }}>
                   <p className="data-value">{item.max}°C</p>
                 </div>
-                <div className="bar min" style={{ height: getHeight(item.min) }}>
+                <div className="bar min" style={{ height: getHeight(item.min), transform: item.min < 0 ? `translateY(${getHeight(item.min)}px)` : undefined }}>
                   <p className="data-value">{item.min}°C</p>
                 </div>          
               </div>
@@ -106,11 +102,12 @@ const TemperatureBarChart = styled(TemperatureBarChartComponet)`
           position: relative;
           .data-value {
             color: rgb(59, 4, 4);
-            text-align: center;
             font-weight: bold;
             font-size: 12px;
             position: absolute;
-            top: -20px
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
           }
         }          
       }
