@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { ICommonComponentProperty, IDailyTemperature } from '../types';
 
@@ -7,8 +7,13 @@ interface ITemperatureBarChartProperty extends ICommonComponentProperty {
 }
 
 const TemperatureBarChartComponet = ({ className, data }: ITemperatureBarChartProperty) => {
-  const basicTemp: number = 40;
+  // 依照實際氣溫的最大值去計算基本參考值
+  const basicTemp: number = useMemo(() => {
+    return data.reduce((prev, curr) => prev + curr.max, 0) / 4 + 10;
+
+  }, [data])
   const barChartMaxHeight: number = 400;
+
   function getHeight (value: number) {
     const perTempToHeight = barChartMaxHeight / basicTemp;
     return value * perTempToHeight;
@@ -19,7 +24,7 @@ const TemperatureBarChartComponet = ({ className, data }: ITemperatureBarChartPr
         <div className="chart-info">
           <p>
             <span className="color max"></span>
-            <span className="text">當日最高溫</span>
+          <span className="text">當日最高溫</span>
           </p>
           <p>
             <span className="color min"></span>
@@ -98,12 +103,14 @@ const TemperatureBarChart = styled(TemperatureBarChartComponet)`
           min-width: 28px;
           margin-right: 10px;
           transition: height 0.5s ease;
+          position: relative;
           .data-value {
-            color: white;
+            color: rgb(59, 4, 4);
             text-align: center;
-            margin-top: 10px;
             font-weight: bold;
             font-size: 12px;
+            position: absolute;
+            top: -20px
           }
         }          
       }
