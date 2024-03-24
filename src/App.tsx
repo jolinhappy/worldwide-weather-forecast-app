@@ -39,6 +39,13 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
   }, []);
 
   async function handleSearch () {
+    if (inputValue === '') {
+      Toast.fire({
+        icon: 'warning',
+        title: '請輸入欲查詢的地區名稱！',
+      });
+      return;
+    }
     const coordinate = await getSearchedCoordinate(inputValue);
     if (!coordinate) return;
     // 避免把input刪掉後，又點擊refresh，會無法找到目前要查的地點
@@ -73,7 +80,7 @@ const AppComponent = ({className}: ICommonComponentProperty) => {
   };
 
   function handleInputChange (event: React.ChangeEvent<HTMLInputElement>):void {
-    setInputValue(event.target.value);
+    setInputValue(event.target.value.trim());
   };
 
   function handleTabSelect (category: Category) {
