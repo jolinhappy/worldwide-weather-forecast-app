@@ -21,7 +21,7 @@ const Refresh = styled.div`
   }
   `
 
-const TodayWeatherCardComponet = ({ className, data, localName, refresh }: ITodayWeatherCardProperty) => {
+const TodayWeatherCardComponent = ({ className, data, localName, refresh }: ITodayWeatherCardProperty) => {
   return (
     <div className={className}>
       <h2>{localName} - 今日天氣</h2>
@@ -39,7 +39,7 @@ const TodayWeatherCardComponet = ({ className, data, localName, refresh }: IToda
   )
 };
 
-const TodayWeatherCard = styled(TodayWeatherCardComponet)`
+const TodayWeatherCard = styled(TodayWeatherCardComponent)`
   padding: 25px;
   background-color: #67595E;
   border-radius: 5px;

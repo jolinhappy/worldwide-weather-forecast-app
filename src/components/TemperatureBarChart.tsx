@@ -6,11 +6,11 @@ interface ITemperatureBarChartProperty extends ICommonComponentProperty {
   data: IDailyTemperature[];
 }
 
-const TemperatureBarChartComponet = ({ className, data }: ITemperatureBarChartProperty) => {
+const TemperatureBarChartComponent = ({ className, data }: ITemperatureBarChartProperty) => {
   // 依照實際氣溫的最大值去計算基本參考值
   const basicTemp = useMemo(() => data.reduce((prev, curr) => prev + curr.max, 0) / 4 + 10, [data])
   const barChartMaxHeight: number = 400;
-  function getHeight (value: number) {
+  const getHeight = (value: number) => {
     const perTempToHeight = barChartMaxHeight / basicTemp;
     return value < 0 ? Math.abs(value * perTempToHeight) : value * perTempToHeight;
   }
@@ -47,7 +47,7 @@ const TemperatureBarChartComponet = ({ className, data }: ITemperatureBarChartPr
   )
 };
 
-const TemperatureBarChart = styled(TemperatureBarChartComponet)`
+const TemperatureBarChart = styled(TemperatureBarChartComponent)`
   height: 425px;
   .bar-chart {
     display: flex;

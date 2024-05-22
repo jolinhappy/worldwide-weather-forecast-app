@@ -8,11 +8,12 @@ interface ISearchInput extends ICommonComponentProperty {
 }
 
 const SearchInputComponent = ({ className, value, inputChange, search }: ISearchInput) => {
-  function handleKeyPress (event: any) {
-  if (event.keyCode === 13) {
-    search();
+  const handleKeyPress = (event: any) => {
+    if (event.keyCode === 13) {
+      search();
+    }
   }
-};
+
   return (
     <div className={className}>
       <input type="text" value={value} placeholder="請輸入地區" onChange={(e) => { inputChange(e) }} onKeyDown={handleKeyPress} />

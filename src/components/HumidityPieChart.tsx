@@ -6,15 +6,15 @@ interface IHumidityPieChartProperty extends ICommonComponentProperty {
   data: IDailyHumidity[],
 }
 
-const HumidityPieChartComponet = ({ className, data }: IHumidityPieChartProperty) => {
+const HumidityPieChartComponent = ({ className, data }: IHumidityPieChartProperty) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-  const pieChartColor: string[] = ['#A49393', '#67595E', '#D48C70', '#E98980']
+  const pieChartColor = useRef<string[]>(['#A49393', '#67595E', '#D48C70', '#E98980'])
 
-  const pieChartData: IPieChartData[] =  useMemo(() => (
+  const pieChartData: IPieChartData[] = useMemo(() => (
     data.map((item, index) => ({
-      color: pieChartColor[index],
+      color: pieChartColor.current[index],
       value: item.value,
       date: item.date
     }))
@@ -24,7 +24,7 @@ const HumidityPieChartComponet = ({ className, data }: IHumidityPieChartProperty
     pieChartData.reduce((prev, curr) => prev + curr.value, 0)
   ), [pieChartData]);
 
-  
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -36,32 +36,33 @@ const HumidityPieChartComponet = ({ className, data }: IHumidityPieChartProperty
     }
   }, [canvasRef]);
 
-  let startAngle = 0;
-  let endAngle = 0;  
-  function drawPieChart(color: string, value: number) {
-    if (!ctx || !canvas) return;
-    endAngle += value * Math.PI * 2 / totalValue;
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    // 移動到圓中心
-    ctx.moveTo(canvas.width / 2, canvas.height / 2);
-    // 畫圓弧(x軸中心, y軸中心, 半徑, 起始角度, 結束角度)
-    ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, endAngle);
-    ctx.lineTo(canvas.width / 2, canvas.height / 2);
-    ctx.fill();
+  useEffect(() => {
+    const drawPieChart = (color: string, value: number) => {
+      let startAngle = 0;
+      let endAngle = 0;
+      if (!ctx || !canvas) return;
+      endAngle += value * Math.PI * 2 / totalValue;
+      ctx.beginPath();
+      ctx.fillStyle = color;
+      // 移動到圓中心
+      ctx.moveTo(canvas.width / 2, canvas.height / 2);
+      // 畫圓弧(x軸中心, y軸中心, 半徑, 起始角度, 結束角度)
+      ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, endAngle);
+      ctx.lineTo(canvas.width / 2, canvas.height / 2);
+      ctx.fill();
 
-    const sliceMiddle = (startAngle + endAngle) / 2;
-		const sliceX = canvas.width / 2 + Math.cos(sliceMiddle) * canvas.width / 4;
-		const sliceY = canvas.height / 2 + Math.sin(sliceMiddle) * canvas.height / 4;
-    const valueString = `${value}`;
-		ctx.font = '14px Arial';
-		ctx.fillStyle = '#fff';
-		ctx.textAlign = 'center';
-		ctx.fillText(valueString, sliceX, sliceY);
-    startAngle = endAngle;
-  };
-
-  pieChartData.forEach((item: IPieChartData) => drawPieChart(item.color, item.value));
+      const sliceMiddle = (startAngle + endAngle) / 2;
+      const sliceX = canvas.width / 2 + Math.cos(sliceMiddle) * canvas.width / 4;
+      const sliceY = canvas.height / 2 + Math.sin(sliceMiddle) * canvas.height / 4;
+      const valueString = `${value}`;
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.fillText(valueString, sliceX, sliceY);
+      startAngle = endAngle;
+    }
+    pieChartData.forEach((item: IPieChartData) => drawPieChart(item.color, item.value));
+  }, [canvas, ctx, pieChartData, totalValue])
 
   return (
     <div className={className}>
@@ -70,8 +71,8 @@ const HumidityPieChartComponet = ({ className, data }: IHumidityPieChartProperty
           pieChartData.map((item: IPieChartData) => (
             <p>
               <span className="color" style={{ backgroundColor: item.color }}></span>
-              <span className="text">{ item.date }</span>
-            </p>            
+              <span className="text">{item.date}</span>
+            </p>
           ))
         }
       </div>
@@ -80,7 +81,7 @@ const HumidityPieChartComponet = ({ className, data }: IHumidityPieChartProperty
   )
 };
 
-const HumidityPieChart = styled(HumidityPieChartComponet)`
+const HumidityPieChart = styled(HumidityPieChartComponent)`
   background-color: #EED6D3;
   padding: 20px;
   display: flex;

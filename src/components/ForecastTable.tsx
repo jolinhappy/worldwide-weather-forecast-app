@@ -1,5 +1,3 @@
-import { table } from "console";
-import React from "react";
 import styled from "styled-components";
 import { ICommonComponentProperty, IDisplayDailyData } from '../types';
 
@@ -7,7 +5,7 @@ interface IForecastTableProperty extends ICommonComponentProperty {
   data: IDisplayDailyData[];
 }
 
-const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
+const ForecastTableComponent = ({ className, data }: IForecastTableProperty) => {
   return (
     <table className={className}>
       <thead>
@@ -62,7 +60,7 @@ const ForecastTableComponet = ({ className, data }: IForecastTableProperty) => {
   )
 };
 
-const ForecastTable = styled(ForecastTableComponet)`
+const ForecastTable = styled(ForecastTableComponent)`
   width: 100%;
   background-color: #EED6D3;
   color: #3B0404;

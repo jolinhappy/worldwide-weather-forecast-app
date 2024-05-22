@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { ICommonComponentProperty, IDisplayTabs, Category } from '../types';
 
@@ -7,7 +6,7 @@ interface ICategoryTabsProperty extends ICommonComponentProperty {
   tabSelect: (category: Category) => void;
 }
 
-const CategoryTabsComponet = ({ className, currentSelectedTab, tabSelect }: ICategoryTabsProperty) => {
+const CategoryTabsComponent = ({ className, currentSelectedTab, tabSelect }: ICategoryTabsProperty) => {
   const displayTabs: IDisplayTabs[] = [
     {
       type: 'weather',
@@ -21,14 +20,14 @@ const CategoryTabsComponet = ({ className, currentSelectedTab, tabSelect }: ICat
       type: 'humidity',
       name: '四日濕度'
     }
-  ] 
+  ]
   return (
     <ul className={className}>
       {
         displayTabs.map((item: IDisplayTabs) => (
           <li
             key={item.type}
-            className={currentSelectedTab === item.type ? 'selected': ''}
+            className={currentSelectedTab === item.type ? 'selected' : ''}
             onClick={() => tabSelect(item.type)}
           >
             {item.name}
@@ -39,7 +38,7 @@ const CategoryTabsComponet = ({ className, currentSelectedTab, tabSelect }: ICat
   )
 };
 
-const CategoryTabs = styled(CategoryTabsComponet)`
+const CategoryTabs = styled(CategoryTabsComponent)`
   width: 100%;
   display: flex;
   margin-bottom: 6px;
