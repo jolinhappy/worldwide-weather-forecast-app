@@ -28,8 +28,8 @@ const HumidityPieChartComponent = ({ className, data }: IHumidityPieChartPropert
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.getContext('2d');
-      setCtx(canvas.getContext('2d'));
+      const context = canvas.getContext('2d');
+      setCtx(context);
       setCanvas(canvas);
       canvas.height = 300;
       canvas.width = 300;
@@ -37,11 +37,12 @@ const HumidityPieChartComponent = ({ className, data }: IHumidityPieChartPropert
   }, [canvasRef]);
 
   useEffect(() => {
+    if (!ctx || !canvas) return;
+
+    let startAngle = 0;
+
     const drawPieChart = (color: string, value: number) => {
-      let startAngle = 0;
-      let endAngle = 0;
-      if (!ctx || !canvas) return;
-      endAngle += value * Math.PI * 2 / totalValue;
+      const endAngle = startAngle + (value * Math.PI * 2 / totalValue);
       ctx.beginPath();
       ctx.fillStyle = color;
       // 移動到圓中心
@@ -60,9 +61,12 @@ const HumidityPieChartComponent = ({ className, data }: IHumidityPieChartPropert
       ctx.textAlign = 'center';
       ctx.fillText(valueString, sliceX, sliceY);
       startAngle = endAngle;
-    }
+    };
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     pieChartData.forEach((item: IPieChartData) => drawPieChart(item.color, item.value));
-  }, [canvas, ctx, pieChartData, totalValue])
+  }, [canvas, ctx, pieChartData, totalValue]);
 
   return (
     <div className={className}>
