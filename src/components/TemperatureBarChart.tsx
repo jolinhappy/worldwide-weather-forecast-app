@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import styled from "styled-components";
 import { ICommonComponentProperty, IDailyTemperature } from '../types';
 
@@ -20,7 +20,7 @@ const TemperatureBarChartComponent = ({ className, data }: ITemperatureBarChartP
         <div className="chart-info">
           <p>
             <span className="color max"></span>
-          <span className="text">當日最高溫</span>
+            <span className="text">當日最高溫</span>
           </p>
           <p>
             <span className="color min"></span>
@@ -31,17 +31,17 @@ const TemperatureBarChartComponent = ({ className, data }: ITemperatureBarChartP
           data.map((item, index) => (
             <div className="temperature-bar" key={index}>
               <div className="bar-item">
-                <div className="bar max" style={{ height: getHeight(item.max), transform: item.max < 0 ? `translateY(${item.max}px)` : undefined  }}>
+                <div className="bar max" style={{ height: getHeight(item.max), transform: item.max < 0 ? `translateY(${item.max}px)` : undefined }}>
                   <p className="data-value">{item.max}°C</p>
                 </div>
                 <div className="bar min" style={{ height: getHeight(item.min), transform: item.min < 0 ? `translateY(${getHeight(item.min)}px)` : undefined }}>
                   <p className="data-value">{item.min}°C</p>
-                </div>          
+                </div>
               </div>
               <p className="date">{item.date}</p>
-            </div>          
+            </div>
           ))
-        }        
+        }
       </div>
     </div>
   )
@@ -49,6 +49,7 @@ const TemperatureBarChartComponent = ({ className, data }: ITemperatureBarChartP
 
 const TemperatureBarChart = styled(TemperatureBarChartComponent)`
   height: 425px;
+  width: 100%;
   .bar-chart {
     display: flex;
     justify-content: space-around;

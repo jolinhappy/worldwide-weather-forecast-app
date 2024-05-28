@@ -86,6 +86,7 @@ const HumidityPieChartComponent = ({ className, data }: IHumidityPieChartPropert
 };
 
 const HumidityPieChart = styled(HumidityPieChartComponent)`
+  width: 100%;
   background-color: #EED6D3;
   padding: 20px;
   display: flex;
