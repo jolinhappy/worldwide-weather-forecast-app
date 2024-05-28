@@ -1,4 +1,3 @@
-import weather from '../apis/weather';
 import { ICoordinate, IWeather } from './index';
 export interface IClouds {
   all: number;
@@ -37,6 +36,5 @@ export interface ICurrentWeatherResponse {
   visibility: number;
   weather: IWeather[];
   wind: IWind;
-  // cod 404
   message?: string;
 }
