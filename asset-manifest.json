@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/worldwide-weather-forecast-app/static/css/main.bc765974.css",
+    "main.js": "/worldwide-weather-forecast-app/static/js/main.88327a55.js",
+    "static/media/refresh.svg": "/worldwide-weather-forecast-app/static/media/refresh.e352fc8bae35a5d76241e0bd9ec1d4c5.svg",
+    "index.html": "/worldwide-weather-forecast-app/index.html",
+    "main.bc765974.css.map": "/worldwide-weather-forecast-app/static/css/main.bc765974.css.map",
+    "main.88327a55.js.map": "/worldwide-weather-forecast-app/static/js/main.88327a55.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bc765974.css",
+    "static/js/main.88327a55.js"
+  ]
+}
