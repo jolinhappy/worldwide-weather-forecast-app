@@ -5,11 +5,12 @@ interface ISearchInput extends ICommonComponentProperty {
   value: string;
   inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   search: () => void;
+  isLoading: boolean;
 }
 
-const SearchInputComponent = ({ className, value, inputChange, search }: ISearchInput) => {
+const SearchInputComponent = ({ className, value, isLoading, inputChange, search }: ISearchInput) => {
   const handleKeyPress = (event: any) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && !isLoading) {
       search();
     }
   }
@@ -17,7 +18,7 @@ const SearchInputComponent = ({ className, value, inputChange, search }: ISearch
   return (
     <div className={className}>
       <input type="text" value={value} placeholder="請輸入地區" onChange={(e) => { inputChange(e) }} onKeyDown={handleKeyPress} />
-      <button onClick={search}>Search</button>
+      <button onClick={search} disabled={isLoading}>Search</button>
     </div>
   )
 };
@@ -50,6 +51,11 @@ const SearchInput = styled(SearchInputComponent)`
     &:hover {
       background-color: #DE847B;
       color: #3B0404;
+    }
+    &:disabled {
+      background-color: #bbbaba;
+      color: #ffffff;
+      cursor: not-allowed;
     }
   }
   @media screen and (min-width: 640px) {

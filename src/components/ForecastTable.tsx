@@ -1,60 +1,74 @@
+import { useState } from 'react';
 import styled from "styled-components";
 import { ICommonComponentProperty, IDisplayDailyData } from '../types';
+import LoadingSpinner from './LoadingSpinner';
 
 interface IForecastTableProperty extends ICommonComponentProperty {
   data: IDisplayDailyData[];
 }
 
 const ForecastTableComponent = ({ className, data }: IForecastTableProperty) => {
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false)
+  };
+
   return (
     <table className={className}>
       <thead>
-          <tr>
-            <th></th>
-            {
-              data.map((item, index) => (
-                <td key={index}>
-                  <h3>{item.date}</h3>
-                  <img src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`} alt="" />
-                  <p>{item.description}</p>
-                </td>
-              ))
-            }
-          </tr>
+        <tr>
+          <th></th>
+          {
+            data.map((item, index) => (
+              <td key={index}>
+                <h3>{item.date}</h3>
+                <div className='weather-section'>
+                  {
+                    isImageLoading && <LoadingSpinner />
+                  }
+                  <img style={isImageLoading ? { display: 'none' } : { display: 'inline' }} onLoad={handleImageLoad} src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`} alt="" />
+                </div>
+
+                <p>{item.description}</p>
+              </td>
+            ))
+          }
+        </tr>
       </thead>
       <tbody>
-          <tr>
-            <th>白天</th>
-            {
-              data.map((item, index) => (
-                <td key={index}>{item.mornTemp}°C</td>
-              ))
-            }
-          </tr>
-          <tr>
-            <th>晚上</th>
-            {
-              data.map((item, index) => (
-                <td key={index}>{item.nightTemp}°C</td>
-              ))
-            }
-          </tr>
-          <tr>
-            <th>體感溫度</th>
-            {
-              data.map((item, index) => (
-                <td key={index}>{item.averageFeelsLike}°C</td>
-              ))
-            }
-          </tr>
-          <tr>
-            <th>紫外線</th>
-            {
-              data.map((item, index) => (
-                <td key={index}>{item.uvi}</td>
-              ))
-            }
-          </tr>
+        <tr>
+          <th>白天</th>
+          {
+            data.map((item, index) => (
+              <td key={index}>{item.mornTemp}°C</td>
+            ))
+          }
+        </tr>
+        <tr>
+          <th>晚上</th>
+          {
+            data.map((item, index) => (
+              <td key={index}>{item.nightTemp}°C</td>
+            ))
+          }
+        </tr>
+        <tr>
+          <th>體感溫度</th>
+          {
+            data.map((item, index) => (
+              <td key={index}>{item.averageFeelsLike}°C</td>
+            ))
+          }
+        </tr>
+        <tr>
+          <th>紫外線</th>
+          {
+            data.map((item, index) => (
+              <td key={index}>{item.uvi}</td>
+            ))
+          }
+        </tr>
       </tbody>
     </table>
   )
@@ -70,6 +84,13 @@ const ForecastTable = styled(ForecastTableComponent)`
   td {
     padding: 10px;
     text-align: center;
+    .weather-section {
+      height: 100px;
+      width: 100px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
   tr {
     th {

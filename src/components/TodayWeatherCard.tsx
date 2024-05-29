@@ -1,7 +1,8 @@
-import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { ICommonComponentProperty, ICurrentWeather } from '../types';
 import { ReactComponent as RefreshIcon } from '../images/refresh.svg';
+import LoadingSpinner from './LoadingSpinner';
 
 interface ITodayWeatherCardProperty extends ICommonComponentProperty {
   data: ICurrentWeather | null;
@@ -22,19 +23,32 @@ const Refresh = styled.div`
   `
 
 const TodayWeatherCardComponent = ({ className, data, localName, refresh }: ITodayWeatherCardProperty) => {
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false)
+  };
+
   return (
     <div className={className}>
       <h2>{localName} - 今日天氣</h2>
       <div className="weather">
-        <img src={`https://openweathermap.org/img/wn/${data?.icon}@4x.png`} alt="weather-icon" />
-        <div className="weather_temp-info">
-          <p className="temp">{data?.temp ? `${data?.temp}°C`: '-'}</p>
-          <p className="description">{data?.description}</p>              
-        </div>  
+        {
+          isImageLoading && <LoadingSpinner />
+        }
+        <img style={isImageLoading ? { display: 'none' } : { display: 'inline' }} onLoad={handleImageLoad} src={`https://openweathermap.org/img/wn/${data?.icon}@4x.png`} alt="weather-icon" />
+        {
+          !isImageLoading && (
+            <div className="weather_temp-info">
+              <p className="temp">{data?.temp ? `${data?.temp}°C` : '-'}</p>
+              <p className="description">{data?.description}</p>
+            </div>
+          )
+        }
       </div>
-        <Refresh>
-          <RefreshIcon onClick={refresh} />
-        </ Refresh>
+      <Refresh>
+        <RefreshIcon onClick={refresh} />
+      </ Refresh>
     </div>
   )
 };
@@ -77,6 +91,7 @@ const TodayWeatherCard = styled(TodayWeatherCardComponent)`
       font-size: 35px;
     }
     .weather {
+      min-height: 200px;
       flex-direction: row;
       margin: 0 auto;
       img {
